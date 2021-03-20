@@ -47,19 +47,47 @@ const crearUsuario= async(req,res= response) =>{ //request , response, agregar e
 
 }
 
-const loginUsuario = (req,res= response) =>{ 
+const loginUsuario = async(req,res= response) =>{ 
     
     const {email, password} = req.body;  //obtiene los datos de req
 
+    try {
+    // validacion de email unico
+        let usuario = await Usuario.findOne({email});
+        console.log(usuario);
+        if(!usuario){
+            return res.status(400).json({
+                ok: false,
+                msg: 'El usuario no existe con ese email'
+            });
+        }
+    //--
     
+    //confirmar password
+    const validPassword = bcrypt.compareSync(password, usuario.password); //funcion de comparar 
+    if(!validPassword){
+        return res.status(400).json({
+            ok: false,
+            msg: 'Password incorrecto'
+        });
+    }
+    //--
 
-
-    res.status(201).json({ //devolvera esto
+    //generar nuestro JWT
+    res.json({
         ok: true,
-        msg:'login', 
-        email,
-        password
+        uid: usuario.id,
+        name: usuario.name
     })
+    } catch (error) {
+        console.log(error)
+        res.status(201).json({ //devolvera esto
+            ok: true,
+            msg:'login',   
+        })
+    }
+
+
 };
 
 const revalidarToken= (req,res= response) =>{ 
