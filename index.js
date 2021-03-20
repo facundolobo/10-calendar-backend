@@ -1,5 +1,6 @@
-const express= require('express') //es como una importación
+const express= require('express'); //es como una importación
 require('dotenv').config(); //para usar variable de entorno 
+const { dbConnection } = require('./database/config');
 
 //mostrar todos lo procesos que corren en el env
 // console.log(process.env)
@@ -7,6 +8,8 @@ require('dotenv').config(); //para usar variable de entorno
 //Crear el servidor de express
 const app= express();
 
+//base de datos
+dbConnection();
 
 //Directorio Público
 app.use(express.static('public')); //es una funcion que se ejecuta en el momento que alguien ahce una petición a mi servidor
