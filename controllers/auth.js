@@ -3,6 +3,7 @@ const {response}= require('express');//para ayudarme con el tipado
 const bcrypt = require('bcryptjs')//para encriptar contraseñas
 
 const Usuario = require('../models/Usuario');
+const {generarJWT} = require('../helpers/jwt');
 
 const crearUsuario= async(req,res= response) =>{ //request , response, agregar eso a resp para el tipado
 
@@ -28,13 +29,16 @@ const crearUsuario= async(req,res= response) =>{ //request , response, agregar e
                 usuario.password = bcrypt.hashSync( password, salt );
                 //--
 
-            await usuario.save();
+                await usuario.save();
+                //generar nuestro JWT
+                const token =await generarJWT(usuario.id, usuario.name);
             //--
         
         res.status(201).json({ //devolvera esto
             ok: true,
             uid: usuario.id,
-            name: usuario.name
+            name: usuario.name,
+            token
            
         })
         }catch(error){
@@ -74,10 +78,13 @@ const loginUsuario = async(req,res= response) =>{
     //--
 
     //generar nuestro JWT
+    const token =await generarJWT(usuario.id, usuario.name);
+
     res.json({
         ok: true,
         uid: usuario.id,
-        name: usuario.name
+        name: usuario.name,
+        token
     })
     } catch (error) {
         console.log(error)
@@ -90,9 +97,17 @@ const loginUsuario = async(req,res= response) =>{
 
 };
 
-const revalidarToken= (req,res= response) =>{ 
+const revalidarToken= async(req,res= response) =>{ 
+
+    const uid = req.uid;
+    const name = req.name;
+
+    //generar un nuevo JWT y retornarlo en esta peticion
+    
+    const token = await generarJWT(uid, name)
     res.json({ //devolvera esto
-        msg:'renew'
+        ok: true,
+        token
     })
 } 
 

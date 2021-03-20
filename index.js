@@ -1,5 +1,8 @@
 const express= require('express'); //es como una importación
-require('dotenv').config(); //para usar variable de entorno 
+require('dotenv').config(); //para usar variable de entorno
+
+const cors = require('cors')
+
 const { dbConnection } = require('./database/config');
 
 //mostrar todos lo procesos que corren en el env
@@ -10,6 +13,9 @@ const app= express();
 
 //base de datos
 dbConnection();
+
+//cors
+app.use(cors())
 
 //Directorio Público
 app.use(express.static('public')); //es una funcion que se ejecuta en el momento que alguien ahce una petición a mi servidor
