@@ -11,6 +11,9 @@ const app= express();
 //Directorio Público
 app.use(express.static('public')); //es una funcion que se ejecuta en el momento que alguien ahce una petición a mi servidor
 
+//Lectura y parseo del body
+app.use(express.json());
+
 //Rutas
 //TODO:  auth // crear, login, renew
 app.use('/api/auth', require('./routes/auth')); //todo lo relacionada a la utenticacion estara en esta ruta
