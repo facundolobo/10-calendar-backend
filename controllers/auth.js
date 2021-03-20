@@ -1,5 +1,7 @@
 
 const {response}= require('express');//para ayudarme con el tipado
+const bcrypt = require('bcryptjs')//para encriptar contraseñas
+
 const Usuario = require('../models/Usuario');
 
 const crearUsuario= async(req,res= response) =>{ //request , response, agregar eso a resp para el tipado
@@ -21,6 +23,11 @@ const crearUsuario= async(req,res= response) =>{ //request , response, agregar e
 
             //grabar en BBDD
             usuario=new Usuario(req.body)
+                //encriptar contraseña
+                const salt = bcrypt.genSaltSync();
+                usuario.password = bcrypt.hashSync( password, salt );
+                //--
+
             await usuario.save();
             //--
         
