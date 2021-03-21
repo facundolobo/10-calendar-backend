@@ -26,7 +26,9 @@ app.use(express.json());
 //Rutas
 //TODO:  auth // crear, login, renew
 app.use('/api/auth', require('./routes/auth')); //todo lo relacionada a la utenticacion estara en esta ruta
+
 //TODO: CRUD: Eventos
+app.use('/api/events', require('./routes/events')); //todo lo relacionada a la utenticacion estara en esta ruta
 
 
 //Escuchar peticiones
