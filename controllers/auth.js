@@ -90,7 +90,7 @@ const loginUsuario = async(req,res= response) =>{
         console.log(error)
         res.status(201).json({ //devolvera esto
             ok: true,
-            msg:'loginn',   
+            msg:'loginn2',   
         })
     }
 
