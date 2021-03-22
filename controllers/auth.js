@@ -13,7 +13,7 @@ const crearUsuario= async(req,res= response) =>{ //request , response, agregar e
         try{
             // validacion de email unico
                 let usuario = await Usuario.findOne({email});
-                console.log(usuario);
+                //console.log(usuario);
                 if(usuario){
                     return res.status(400).json({
                         ok: false,
@@ -80,7 +80,7 @@ const loginUsuario = async(req,res= response) =>{
     //generar nuestro JWT
     const token =await generarJWT(usuario.id, usuario.name);
 
-    return res.json({
+    res.json({
         ok: true,
         uid: usuario.id,
         name: usuario.name,
